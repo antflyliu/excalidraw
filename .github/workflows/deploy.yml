@@ -1,0 +1,39 @@
+name: Deploy Excalidraw to Cloudflare Pages
+
+on:
+  push:
+    branches: [ master, main ] # 或者是你自定义的同步分支
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Install Dependencies
+        run: yarn install --immutable
+
+      - name: Build Project
+        run: yarn build
+        env:
+          GENERATE_SOURCEMAP: false
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: excalidraw # 你在 CF Pages 创建的项目名称
+          directory: build # 编译后的产物目录
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
