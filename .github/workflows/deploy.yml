@@ -28,6 +28,15 @@ jobs:
         run: yarn build
         env:
           GENERATE_SOURCEMAP: false
+      # 👇 插入这个临时步骤来打印目录结构
+      - name: Debug Workspace Directory
+        run: |
+          echo "=== Root Directory ==="
+          ls -la
+          echo "=== Packages Directory ==="
+          ls -la packages/ || true
+          echo "=== Excalidraw Subpackage ==="
+          ls -la packages/excalidraw/ || true
 
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
@@ -35,5 +44,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: excalidraw # 你在 CF Pages 创建的项目名称
-          directory: dist # 编译后的产物目录
+          directory: excalidraw-app/build # 编译后的产物目录
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
