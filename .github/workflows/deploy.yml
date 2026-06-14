@@ -35,5 +35,5 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: excalidraw # 你在 CF Pages 创建的项目名称
-          directory: build # 编译后的产物目录
+          directory: dist # 编译后的产物目录
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
